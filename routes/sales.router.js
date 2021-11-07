@@ -7,7 +7,7 @@ const verifyToken = require('../middlewares/verifyToken');
 
 router.get('/:id', verifyToken, salesController.getSale);
 
-router.get('/', salesController.getSales);
+router.get('/', verifyToken, salesController.getSales);
 
 router.post('/',
     body('price', 'El valor es requerido y debe ser numerico').exists(),
