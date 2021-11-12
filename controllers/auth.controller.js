@@ -11,7 +11,7 @@ const login = async (req, res) => {
         return res.status(403).json({
             error: {
                 code: 403,
-                msg: 'Usuaro y contraseña incorrectos'
+                msg: 'Usuario y contraseña incorrecta'
             }
         });
     }
@@ -22,7 +22,7 @@ const login = async (req, res) => {
         return res.status(403).json({
             error: {
                 code: 403,
-                msg: 'Usuario y contraseña incorrectos'
+                msg: 'Usuario y contraseña incorrecta'
             }
         });
     }

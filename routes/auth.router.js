@@ -2,7 +2,9 @@ const { Router }  = require('express');
 const router = Router();
 const { body } = require('express-validator');
 const { authController } = require('../controllers')
-const verifyToken = require('../middlewares/verifyToken');
+const jwtAuthz = require("../middlewares/jwt.Middleware");
+const jwtCheck = require("../middlewares/jwt.Middleware");
+//const verifyToken = require('../middlewares/verifyToken');
 
 router.post('/login',
     body('email', 'El email es requerido')
@@ -12,6 +14,10 @@ router.post('/login',
     authController.login
 )
 
-router.get('/verifyToken', verifyToken, authController.validateToken)
+//router.get('/verifyToken', jwtAuthz, authController.validateToken)
+
+router.get('/authorized', function (req, res) {
+    res.send('Secured Resource');
+});
 
 module.exports = router;

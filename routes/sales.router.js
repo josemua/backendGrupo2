@@ -3,11 +3,12 @@ const { Router } = require('express');
 const router = Router();
 const { body } = require('express-validator');
 const { salesController } = require('../controllers');
-const verifyToken = require('../middlewares/verifyToken');
+const jwtCheck = require("../middlewares/jwt.Middleware");
+//const verifyToken = require('../middlewares/verifyToken');
 
-router.get('/:id', verifyToken, salesController.getSale);
+router.get('/:id', jwtCheck, salesController.getSale);
 
-router.get('/', verifyToken, salesController.getSales);
+router.get('/', jwtCheck, salesController.getSales);
 
 router.post('/',
     body('price', 'El valor es requerido y debe ser numerico').exists(),
@@ -15,7 +16,7 @@ router.post('/',
     body('clientId', 'La ID del Cliente es requerida').exists(),
     body('sellerId', 'La ID del Vendedor es requerida').exists(),
     body('products', 'productos son requeridos').exists().notEmpty()
-    , verifyToken, salesController.createSale);
+    , jwtCheck, salesController.createSale);
 
 router.put('/:id',
     body('price', 'El valor es requerido y debe ser numerico').exists(),
@@ -23,8 +24,8 @@ router.put('/:id',
     body('clientId', 'La ID del Cliente es requerida').exists(),
     body('sellerId', 'La ID del Vendedor es requerida').exists(),
     body('products', 'productos son requeridos').exists().notEmpty()
-    ,verifyToken, salesController.updateSale);
+    ,jwtCheck, salesController.updateSale);
 
-router.delete('/:id', verifyToken, salesController.deleteSale);
+router.delete('/:id', jwtCheck, salesController.deleteSale);
 
 module.exports = router;
