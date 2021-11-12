@@ -2,11 +2,14 @@ const { Router } = require("express");
 const router = Router();
 const { body } = require("express-validator");
 const { usersController } = require("../controllers");
-const verifyToken = require("../middlewares/verifyToken");
+const jwtCheck = require("../middlewares/jwt.Middleware");
+const jwtAuthz = require("express-jwt-authz");
+//const verifyToken = require("../middlewares/verifyToken");
+
 //GET USER
-router.get("/:id", verifyToken, usersController.getUser);
+router.get("/:id", jwtCheck, usersController.getUser);
 //GET ALL USERS
-router.get("/", verifyToken, usersController.getUsers);
+router.get("/", jwtCheck, jwtAuthz(["read:users"]), usersController.getUsers);
 //CREATE USER
 router.post(
   "/",
@@ -27,16 +30,10 @@ router.put(
   body("email", "El email es requerido y debe tener minimo 6 caracteres")
     .exists()
     .isEmail(),
-  body(
-    "password",
-    "la contraseña es requerida y debe tener minimo 8 caracteres"
-  )
-    .exists()
-    .isLength({ min: 8 }),
-  verifyToken,
+    jwtAuthz(["update:users"]), 
   usersController.updateUser
 );
 //DELETE USER
-router.delete("/:id", verifyToken, usersController.deleteUser);
+router.delete("/:id", jwtCheck, jwtAuthz(["update:users"]), usersController.deleteUser);
 
 module.exports = router;
